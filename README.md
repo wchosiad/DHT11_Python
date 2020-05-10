@@ -17,9 +17,9 @@ python3 -m pip install .
     pin = `<pin number>` (required)  
     sensorType = `<DHTXX.DHT11 or DHTXX.DHT22>` (optional, default=DHT22)  
     scale = `<DHTXX.FAHRENHEIT or DHTXX.CELCIUS>` (optional, default=FAHRENHEIT)  
-2. Call `read()` method, which will return `DHT11Result` object with actual values and error code.
+2. Call `read()` method, which will return `DHTXXResult` object with actual values and error code.
 
-Note that these little sensors don't always read successfully every time, you may need to try reading a few times before you get a good value.
+Note that these little sensors don't always read successfully every time, so you may need to try reading a few times before you get a good value.
 
 For example:
 
@@ -31,7 +31,7 @@ from dhtxx import DHTXX
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
-# read data using GPIO #16 for DHT22 with results in FAHRENHEIT
+# read data using GPIO #16 pin for a DHT22 sensor with results in FAHRENHEIT
 instance = DHTXX(pin=16, sensorType=DHTXX.DHT22, scale=DHTXX.FAHRENHEIT)
 result = instance.read()
 
