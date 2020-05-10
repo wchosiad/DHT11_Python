@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import dht11
+from dhtxx import DHTXX
 import time
 import datetime
 
@@ -8,7 +8,7 @@ GPIO.setwarnings(True)
 GPIO.setmode(GPIO.BCM)
 
 # read data using pin 16
-instance = dht11.DHTXX(pin=16, sensorType=dht11.DHTXX.DHT22)
+instance = DHTXX(pin=16, sensorType=DHTXX.DHT22, scale=DHTXX.FAHRENHEIT)
 
 try:
 	while True:
