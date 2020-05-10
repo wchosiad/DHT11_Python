@@ -7,20 +7,24 @@ import datetime
 GPIO.setwarnings(True)
 GPIO.setmode(GPIO.BCM)
 
-# read data using pin 14
-instance = dht11.DHT11(pin=14)
+# read data using pin 16
+instance = dht11.DHTXX(pin=16, sensorType=dht11.DHTXX.DHT22)
 
 try:
 	while True:
-	    result = instance.read()
-	    if result.is_valid():
-	        print("Last valid input: " + str(datetime.datetime.now()))
+		try:
+			result = instance.read()
+			if result.is_valid():
+				print("Last valid input: " + str(datetime.datetime.now()))
+				print("Temperature: %-3.1f F" % result.temperature)
+				print("Humidity: %-3.1f %%" % result.humidity)
+				print("----------------------------------")
+#			else:
+#				print("invald result")
+		except:
+			raise()
 
-	        print("Temperature: %-3.1f C" % result.temperature)
-	        print("Humidity: %-3.1f %%" % result.humidity)
-
-	    time.sleep(6)
-
+		time.sleep(3)
 except KeyboardInterrupt:
-    print("Cleanup")
-    GPIO.cleanup()
+	print("Cleanup")
+	GPIO.cleanup()

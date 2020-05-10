@@ -2,8 +2,8 @@ import time
 import RPi
 
 
-class DHT11Result:
-    'DHT11 sensor result returned by DHT11.read() method'
+class DHTXXResult:
+    'DHTXX sensor result returned by DHTXX.read() method'
 
     ERR_NO_ERROR = 0
     ERR_MISSING_DATA = 1
@@ -19,16 +19,22 @@ class DHT11Result:
         self.humidity = humidity
 
     def is_valid(self):
-        return self.error_code == DHT11Result.ERR_NO_ERROR
+        return self.error_code == DHTXXResult.ERR_NO_ERROR
 
 
-class DHT11:
-    'DHT11 sensor reader class for Raspberry'
+class DHTXX:
+    'DHTXX sensor reader class for Raspberry'
+    DHT11 = 11
+    DHT22 = 22
+    FAHRENHEIT = 1
+    CELCIUS = 2
 
     __pin = 0
 
-    def __init__(self, pin):
+    def __init__(self, pin, sensorType=DHT22, scale=FAHRENHEIT):
         self.__pin = pin
+        self.__sensorType = sensorType
+        self.__scale = scale
 
     def read(self):
         RPi.GPIO.setup(self.__pin, RPi.GPIO.OUT)
@@ -50,7 +56,7 @@ class DHT11:
 
         # if bit count mismatch, return error (4 byte data + 1 byte checksum)
         if len(pull_up_lengths) != 40:
-            return DHT11Result(DHT11Result.ERR_MISSING_DATA, 0, 0)
+            return DHTXXResult(DHTXXResult.ERR_MISSING_DATA, 0, 0)
 
         # calculate bits from lengths of the pull up periods
         bits = self.__calculate_bits(pull_up_lengths)
@@ -61,20 +67,33 @@ class DHT11:
         # calculate checksum and check
         checksum = self.__calculate_checksum(the_bytes)
         if the_bytes[4] != checksum:
-            return DHT11Result(DHT11Result.ERR_CRC, 0, 0)
+            return DHTXXResult(DHTXXResult.ERR_CRC, 0, 0)
 
         # ok, we have valid data
 
         # The meaning of the return sensor values
-        # the_bytes[0]: humidity int
-        # the_bytes[1]: humidity decimal
-        # the_bytes[2]: temperature int
-        # the_bytes[3]: temperature decimal
+        #                    DHT11              DHT22
+        #               ---------------    ---------------
+        # the_bytes[0]:     humidity         humidity (MSB) (the part on the left of the decimal)
+        # the_bytes[1]:        0             humidity (LSB) (the part to the right of the decimal)
+        # the_bytes[2]:   temperature        temperature (MSB) (left side of decimal - Note if bit 8 is set, temerature is negative)
+        # the_bytes[3]:        0             temperature (LSB) (right side of decimal)
+        # the_bytes[4]:     checksum         checksum (lower 8 bits of the sum of bytes 0-3)
 
-        temperature = the_bytes[2] + float(the_bytes[3]) / 10
-        humidity = the_bytes[0] + float(the_bytes[1]) / 10
+        if (self.__sensorType == self.DHT11):
+            temperature = the_bytes[2]
+            humidity = the_bytes[0]
+        else:
+            temperature = the_bytes[2]
+            if (temperature >= 128):
+                temperature = -1 * (temperature - 128)
+            temperature = temperature + (float(the_bytes[3]) / 10.0)
+            humidity = the_bytes[0] + (float(the_bytes[1]) / 10.0)
 
-        return DHT11Result(DHT11Result.ERR_NO_ERROR, temperature, humidity)
+        if (self.__scale == self.FAHRENHEIT):
+            temperature = (temperature * 9 / 5) + 32
+            
+        return DHTXXResult(DHTXXResult.ERR_NO_ERROR, temperature, humidity)
 
     def __send_and_sleep(self, output, sleep):
         RPi.GPIO.output(self.__pin, output)
