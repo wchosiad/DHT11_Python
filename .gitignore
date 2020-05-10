@@ -140,7 +140,7 @@ Training
 Blog
 About
 
-#Visual Studio Code
+#Visual Studio Code Things to Ignore
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
