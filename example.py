@@ -19,8 +19,9 @@ try:
 				print("Temperature: %-3.1f F" % result.temperature)
 				print("Humidity: %-3.1f %%" % result.humidity)
 				print("----------------------------------")
-#			else:
-#				print("invald result")
+			else:
+				print("invald result")
+				print("----------------------------------")
 		except:
 			raise()
 

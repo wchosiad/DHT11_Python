@@ -74,10 +74,10 @@ class DHTXX:
         # The meaning of the return sensor values
         #                    DHT11              DHT22
         #               ---------------    ---------------
-        # the_bytes[0]:     humidity         humidity (MSB) (the part on the left of the decimal)
-        # the_bytes[1]:        0             humidity (LSB) (the part to the right of the decimal)
-        # the_bytes[2]:   temperature        temperature (MSB) (left side of decimal - Note if bit 8 is set, temerature is negative)
-        # the_bytes[3]:        0             temperature (LSB) (right side of decimal)
+        # the_bytes[0]:     humidity         humidity (MSB) 
+        # the_bytes[1]:        0             humidity (LSB) 
+        # the_bytes[2]:   temperature        temperature (MSB) (Note: if bit 8 is set, temperature is negative)
+        # the_bytes[3]:        0             temperature (LSB) 
         # the_bytes[4]:     checksum         checksum (lower 8 bits of the sum of bytes 0-3)
 
         if (self.__sensorType == self.DHT11):
@@ -85,10 +85,18 @@ class DHTXX:
             humidity = the_bytes[0]
         else:
             temperature = the_bytes[2]
+            negativeFlag = False
             if (temperature >= 128):
-                temperature = -1 * (temperature - 128)
-            temperature = temperature + (float(the_bytes[3]) / 10.0)
-            humidity = the_bytes[0] + (float(the_bytes[1]) / 10.0)
+                negativeFlag = True
+                temperature = temperature - 128
+            temperature =  (temperature << 8) + the_bytes[3]
+            if (negativeFlag):
+                temperature = -1 * temperature
+
+            temperature = float(temperature) / 10.0
+            
+            humidity = (the_bytes[0] << 8) + the_bytes[1]    
+            humidity = float(humidity) / 10.0
 
         if (self.__scale == self.FAHRENHEIT):
             temperature = (temperature * 9 / 5) + 32
