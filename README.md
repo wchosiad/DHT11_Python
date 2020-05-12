@@ -26,6 +26,7 @@ For example:
 ```python
 import RPi.GPIO as GPIO
 from dhtxx import DHTXX
+from time import sleep
 
 # initialize GPIO
 GPIO.setwarnings(False)
@@ -42,6 +43,7 @@ while True:
         break
     else:
         print("Error: %d" % result.error_code)
+        sleep(2)
 ```
 
 For working example, see `example.py` (you may need to adjust pin for your configuration)
