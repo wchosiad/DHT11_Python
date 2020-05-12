@@ -7,7 +7,7 @@ import datetime
 GPIO.setwarnings(True)
 GPIO.setmode(GPIO.BCM)
 
-# read data using pin 16
+# read data using pin 16. Change the pin to whichever pin you want.
 instance = DHTXX(pin=16, sensorType=DHTXX.DHT22, scale=DHTXX.FAHRENHEIT)
 
 try:

@@ -33,9 +33,9 @@ GPIO.setmode(GPIO.BCM)
 
 # read data using GPIO #16 pin for a DHT22 sensor with results in FAHRENHEIT
 instance = DHTXX(pin=16, sensorType=DHTXX.DHT22, scale=DHTXX.FAHRENHEIT)
-result = instance.read()
 
 while True:
+    result = instance.read()
     if result.is_valid():
         print("Temperature: %-3.1f F" % result.temperature)
         print("Humidity: %-3.1f %%" % result.humidity)
