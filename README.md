@@ -52,7 +52,7 @@ while True:
         print("Humidity: %-3.1f %%" % result.humidity)
         break
     else:
-        print("Error: %d" % result.error_msg)
+        print("Error: ",  result.error_msg)
         sleep(2)
 ```
 
@@ -74,7 +74,7 @@ if result.is_valid():
     print("Temperature: %-3.1f F" % result.temperature)
     print("Humidity: %-3.1f %%" % result.humidity)
 else:
-    print("Error: %d" % result.error_msg)
+    print("Error: ",  result.error_msg)
 ```
 
 For working examples, see `example.py` and `example2.py` (you may need to adjust pin for your configuration)
