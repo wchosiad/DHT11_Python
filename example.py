@@ -25,6 +25,7 @@ try:
 			else:
 				errors = errors + 1
 				rate = float(errors/runs) * 100.0
+				print(result.error_msg)
 				print("Invalid result. Error rate: %-3.1f %%" % rate)
 				print("----------------------------------")
 		except:
