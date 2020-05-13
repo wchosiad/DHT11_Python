@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="dhtxx",
-    version="0.1.0",
+    version="0.1.1",
     author="Bill Chosiad (forked from Zoltán Szarvas)",
     author_email="",
     description="Pure Python library for reading DHT11 or DHT22 sensors on Raspberry Pi",
