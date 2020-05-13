@@ -19,8 +19,9 @@ python3 -m pip install .
     scale = `<DHTXX.FAHRENHEIT or DHTXX.CELCIUS>` (optional, default=FAHRENHEIT)  
 
 2. Call `read()` method, which will return `DHTXXResult` object with actual values and error code.
-3. Interpret the DHTXXResult.  The DHTXXResult has a few properties:  
-    is_valid(): Returns True or False to indicate if the request was successful.  
+
+3. Interpret the DHTXXResult.  The DHTXXResult has a method and a few properties:  
+    is_valid(): Method that returns True or False to indicate if the request was successful.  
     error_code: An integer code representing the error.  
     error_msg: A description of the error.  
     temperature: The returned temperature, or None if an error occurred.  
