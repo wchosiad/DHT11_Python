@@ -19,11 +19,11 @@ python3 -m pip install .
     scale = `<DHTXX.FAHRENHEIT or DHTXX.CELCIUS>` (optional, default=FAHRENHEIT)  
 
 2. Call `read()` method, which will return `DHTXXResult` object with actual values and error code.
-3. Interpret the DHTXXResult.  The DHTXXResult has a few properties:
-    is_valid(): Returns True or False to indicate if the request was successful.
-    error_code: An integer code representing the error.
-    error_msg: A description of the error.
-    temperature: The returned temperature, or None if an error occurred.
+3. Interpret the DHTXXResult.  The DHTXXResult has a few properties:  
+    is_valid(): Returns True or False to indicate if the request was successful.  
+    error_code: An integer code representing the error.  
+    error_msg: A description of the error.  
+    temperature: The returned temperature, or None if an error occurred.  
     humidity: The returned humidity, or None if an error occurred.
 
 These little sensors require some very strict timings to get a good reading. Raspberry Pi's have a hard time being that precise, so invalid readings are frequent - maybe as much as half of all readings fail. That's why it's important to retry until you get a successful reading.
